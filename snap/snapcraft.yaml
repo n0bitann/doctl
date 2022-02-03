@@ -1,5 +1,5 @@
 name: doctl
-version: git
+adopt-info: doctl
 summary: The official DigitalOcean command line interface
 description: |
   doctl allows you to interact with the DigitalOcean API via the command line.
@@ -15,16 +15,17 @@ confinement: strict
 parts:
   doctl:
     source: https://github.com/digitalocean/doctl
+    override-pull: |
+      snapcraftctl pull
+      version=$(git describe --abbrev=0)
+      snapcraftctl set-version ${version}
     plugin: go
     source-type: git
 
 apps:
   doctl:
-    command: bin/doctl-launch
+    command: bin/doctl
     plugs:
       - home
       - network
       - ssh-keys
-      - dot-docker
-      - doctl-config
-      - kube-config
